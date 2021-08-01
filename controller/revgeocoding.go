@@ -11,6 +11,7 @@ import (
 var apikey = "-0nwQ1Cf1TQmwR9xQw_YzhGutZ499vY4WMLfF_9ejgs"
 var address string
 
+// struct type of json coming from gecoding api
 type output struct {
 	Items []struct {
 		Title string `json:"title"`
@@ -27,8 +28,8 @@ type output struct {
 		} `json:"address"`
 	} `json:"items"`
 }
-
-func getstate(latitude string,longitude string) string {
+// getState - method to getState from gps coordinates 
+func getState(latitude string,longitude string) string {
 	url := "https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=" + apikey + "&at=" + fmt.Sprint(latitude) + "," + fmt.Sprint(longitude)
 
 	res, err := http.Get(url)
@@ -52,42 +53,3 @@ func getstate(latitude string,longitude string) string {
 	return state
 }
 
-//json format of reverse geocoding api result
-// {
-//   "items": [
-//     {
-//       "title": "Creativity",
-//       "id": "here:pds:place:356jx7ps-6b18784695c70f5001df83da965f2570",
-//       "resultType": "place",
-//       "address": {
-//         "label": "Creativity, Shivajinagar, Bengaluru 560001, India",
-//         "countryCode": "IND",
-//         "countryName": "India",
-//         "stateCode": "KA",
-//         "state": "Karnataka",
-//         "county": "Bengaluru",
-//         "city": "Bengaluru",
-//         "district": "Shivajinagar",
-//         "postalCode": "560001"
-//       },
-//       "position": {
-//         "lat": 12.98023,
-//         "lng": 77.60094
-//       },
-//       "access": [
-//         {
-//           "lat": 12.98022,
-//           "lng": 77.60093
-//         }
-//       ],
-//       "distance": 11,
-//       "categories": [
-//         {
-//           "id": "800-8200-0174",
-//           "name": "Школа",
-//           "primary": true
-//         }
-//       ]
-//     }
-//   ]
-// }
