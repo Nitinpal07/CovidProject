@@ -119,11 +119,12 @@ func GetCovidCases(c echo.Context) (err error) {
   return c.JSON(http.StatusOK,responseObject) 
 }
 
-
+//get Covid cases
 func GetCases(c echo.Context) error {
-  lat := c.FormValue("lat")
-  lng := c.FormValue("lng")
-  fmt.Println(lat)
-  fmt.Println(lng)
-  return c.String(http.StatusOK, "hi")
+  latitude := c.FormValue("lat")
+  longitude := c.FormValue("lng")
+  //fmt.Println(latitude)
+  //fmt.Println(longitude)
+  state := getstate(latitude,longitude)
+  return c.String(http.StatusOK, state)
 }
