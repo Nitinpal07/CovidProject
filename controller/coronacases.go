@@ -174,10 +174,10 @@ func GetCasesInState(state string){
 
 // GetCases - handler method for getting covid cases from gps coordinates provided by user
 func GetCases(c echo.Context) error {
-  latitude := c.FormValue("lat")
-  longitude := c.FormValue("lng")
-  //fmt.Println(latitude)
-  //fmt.Println(longitude)
+  latitude := c.QueryParam("lat")
+  longitude := c.QueryParam("lng")
+  fmt.Println(latitude)
+  fmt.Println(longitude)
   state := getState(latitude,longitude)
   GetCasesInState(state)
   return c.String(http.StatusOK, state)

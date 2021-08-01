@@ -3,12 +3,15 @@ package main
 import(
 	"net/http"
 	"github.com/labstack/echo"
+	"github.com/joho/godotenv"
+	"os"
 	"myapp/controller"
 	database "myapp/database"
 )
 
 func main(){
-
+	godotenv.Load()
+	port := os.Getenv("PORT")
 	e := echo.New() 
 	database.ConnectDB()
 	e.GET("/", func(c echo.Context) error {       
@@ -20,5 +23,5 @@ func main(){
 	//updatedata()
 
 	e.POST("/getCases",controller.GetCases) //GetCovidInCoordinates endpoint
-	e.Logger.Fatal(e.Start(":8000"))
+	e.Logger.Fatal(e.Start(port))
 }
