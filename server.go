@@ -36,7 +36,7 @@ func main(){
 	server.GET("/covidcases", controller.GetCovidCases) // UpdateCovidData endpoint
 	//updatedata()
 
-	server.POST("/getCases",controller.GetCases) //GetCovidInCoordinates endpoint
+	server.GET("/getCases/:lat/:lng",controller.GetCases) //GetCovidInCoordinates endpoint
 	godotenv.Load()
 	port := os.Getenv("PORT")
 
