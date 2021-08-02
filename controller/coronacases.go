@@ -41,6 +41,12 @@ type Response []struct {
     TotalInfected int    `json:"totalInfected";bson:"totalInfected"`
   } `json:"regionData";bson:"regionData"`
 }
+type Result struct{
+  State string `json:"state"`
+  ActiveCases int32 `json:"activecases"`
+  LastUpdatedAtApify primitive.DateTime `json:"lastUpdatedAtApify"`
+  TotalCasesInIndia int32 `json:"totalcasesinindia"`
+}
 
 // structToBsonDocument - method to convert golang struct to bson document
 func structToBsonDocument(v interface{}) (doc *bson.D, err error) {
@@ -121,7 +127,7 @@ func GetCovidCases(c echo.Context) (err error) {
 }
 
 // GetCasesInState - handler method for getting covid cases in a state from database
-func GetCasesInState(state string){
+func GetCasesInState(state string) *Result{
 
   quickstartDatabase := database.MI.Client.Database("covid") // maybe we need create this database before 
   // set collection
@@ -133,6 +139,7 @@ func GetCasesInState(state string){
   if err = covidCollection.FindOne(ctx, bson.M{}).Decode(&response); err != nil {
     log.Fatal(err)
   }
+  
   fmt.Println("activecases")
   fmt.Println(response["activecases"])
   fmt.Println("-----------------")
@@ -169,7 +176,14 @@ func GetCasesInState(state string){
     }
     //fmt.Println("---------")
   }
+  result := &Result{
+    State:state,
+    ActiveCases: response["activecases"].(int32),
+    LastUpdatedAtApify:response["lastupdatedatapify"].(primitive.DateTime),
+    TotalCasesInIndia:CaseInState,
+  }
 
+  return result
 }
 
 // GetCases - handler method for getting covid cases from gps coordinates provided by user
@@ -178,7 +192,14 @@ func GetCases(c echo.Context) error {
   longitude := c.QueryParam("lng")
   fmt.Println(latitude)
   fmt.Println(longitude)
+  
+  
   state := getState(latitude,longitude)
-  GetCasesInState(state)
-  return c.String(http.StatusOK, state)
+  res := GetCasesInState(state)
+  b, err := json.Marshal(res)
+  if err != nil {
+      log.Fatal(err)
+  }
+  fmt.Println(string(b))
+  return c.String(http.StatusOK, string(b))
 }
