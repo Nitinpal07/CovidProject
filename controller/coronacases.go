@@ -140,34 +140,20 @@ func GetCasesInState(state string) *Result{
     log.Fatal(err)
   }
   
-  fmt.Println("activecases")
-  fmt.Println(response["activecases"])
-  fmt.Println("-----------------")
+  // fmt.Println("activecases")
+  // fmt.Println(response["activecases"])
+  // fmt.Println("-----------------")
 
-  fmt.Println("lastupdatetime")
-  fmt.Println(response["lastupdatedatapify"])
-  fmt.Println("-----------------")
+  // fmt.Println("lastupdatetime")
+  // fmt.Println(response["lastupdatedatapify"])
+  // fmt.Println("-----------------")
   
-  fmt.Println("totalCases")
-  fmt.Println(response["totalcases"])
-  fmt.Println("-----------------")
+  // fmt.Println("totalCases")
+  // fmt.Println(response["totalcases"])
+  // fmt.Println("-----------------")
   
   var CaseInState int32
   for _,v := range response["regiondata"].(primitive.A){
-    //fmt.Println(k) 
-    //fmt.Println(reflect.TypeOf(v))
-    //fmt.Println(v) --> map
-    //var currstate string
-    //var currstatecases string
-    // for x,y := range v.(primitive.M){
-    //   //fmt.Println("inside loop")
-    //   fmt.Println(x[])
-    //   fmt.Println(y)
-    //   // if(x==state){
-    //   //   CaseInState = 
-    //   // }
-    // }
-   // fmt.Println(v.(primitive.M)["region"])
     if(v.(primitive.M)["region"]==state){
       fmt.Println(state)
       CaseInState = v.(primitive.M)["totalinfected"].(int32)

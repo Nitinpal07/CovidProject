@@ -47,7 +47,7 @@ func getState(latitude string,longitude string) string {
 	// fmt.Println(data)
 	var state string
 	for _, add := range data.Items {
-		state = add.Address.City
+		state = add.Address.State
 		//fmt.Printf(state)
 	}
 	return state
