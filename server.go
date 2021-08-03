@@ -46,5 +46,6 @@ func main(){
 }
 
 func Version(context echo.Context) error {
-	return context.JSON(http.StatusOK, "Welcome to the CovidTracker Application\n1.Go to /covidcases to update Covid Cases In the Mongodb\n2.Go to /getCases to Get Covid Cases In region given by user")
+	return context.HTML(http.StatusOK,"<strong>Welcome to the Covid Tracker  API</strong><ol><li>Go to /covidcases to update Covid Cases In the Mongodb Database</li>  <li>Go to /getCases?lat=xx&amp;lng=xx to Get Covid Cases In state where the gps coordinates(lat,lng) lies</li></ol>")
 }
+
