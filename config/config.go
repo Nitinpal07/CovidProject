@@ -5,7 +5,7 @@ import(
 )
 
 type Config struct {
-    DBDriver      string `mapstructure:"DB_DRIVER"`
+    PORT string `mapstructure:"PORT"`
     DBSource      string `mapstructure:"DB_SOURCE"`
-    ServerAddress string `mapstructure:"SERVER_ADDRESS"`
+    ReverseGeoCodingApiKey string `mapstructure:"REVERSE_GEOCODING_API_KEY"`
 }

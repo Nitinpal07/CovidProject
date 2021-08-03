@@ -8,6 +8,8 @@ import(
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"github.com/joho/godotenv"
+	"os"
 )
 
 type MongoInstance struct {
@@ -21,8 +23,9 @@ var MI MongoInstance
 
 // ConnectDB - database connection
 func ConnectDB() {
-
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://nitin:V2Y902i3XauaLFVb@cluster0.hmfz9.mongodb.net/blog?retryWrites=true&w=majority&authSource=admin"))
+	godotenv.Load()
+	DB_URL := os.Getenv("DB_SOURCE")
+	client, err := mongo.NewClient(options.Client().ApplyURI(string(DB_URL)))
 	if err != nil {
 		log.Fatal(err)
 	}

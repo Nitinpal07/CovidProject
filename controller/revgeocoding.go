@@ -6,9 +6,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"github.com/joho/godotenv"
+	"os"
 )
 
-var apikey = "-0nwQ1Cf1TQmwR9xQw_YzhGutZ499vY4WMLfF_9ejgs"
 var address string
 
 // struct type of json coming from gecoding api
@@ -30,6 +31,9 @@ type output struct {
 }
 // getState - method to getState from gps coordinates 
 func getState(latitude string,longitude string) string {
+	godotenv.Load()
+	apikey := os.Getenv("REVERSE_GEOCODING_API_KEY")
+
 	url := "https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=" + apikey + "&at=" + fmt.Sprint(latitude) + "," + fmt.Sprint(longitude)
 
 	res, err := http.Get(url)
