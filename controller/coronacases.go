@@ -107,18 +107,6 @@ func GetCasesInState(state string) *(model.Result){
     log.Fatal(err)
   }
   
-  // fmt.Println("activecases")
-  // fmt.Println(response["activecases"])
-  // fmt.Println("-----------------")
-
-  // fmt.Println("lastupdatetime")
-  // fmt.Println(response["lastupdatedatapify"])
-  // fmt.Println("-----------------")
-  
-  // fmt.Println("totalCases")
-  // fmt.Println(response["totalcases"])
-  // fmt.Println("-----------------")
-  
   var CaseInState int32
   for _,v := range response["regiondata"].(primitive.A){
     if(v.(primitive.M)["region"]==state){
