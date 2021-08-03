@@ -12,42 +12,9 @@ import (
   "time"
   "go.mongodb.org/mongo-driver/bson/primitive"
   database "myapp/database"
+  model "myapp/models"
 )
  
- 
-// this is array of cases
-// we must add bson keyword for mongodb library autodetect fields
-type Response []struct {
-  ID               primitive.ObjectID `json:"id";bson:"_id"`
-  ActiveCases      int    `json:"activeCases";bson:"activeCases"`
-  ActiveCasesNew   int    `json:"activeCasesNew";bson:"activeCasesNew"`
-  Recovered        int    `json:"recovered";bson:"recovered"`
-  RecoveredNew     int    `json:"recoveredNew";bson:"recoveredNew"`
-  Deaths           int    `json:"deaths";bson:"deaths"`
-  DeathsNew        int    `json:"deathsNew";bson:"deathsNew"`
-  PreviousDayTests int    `json:"previousDayTests";bson:"previousDayTests"`
-  TotalCases       int    `json:"totalCases";bson:"totalCases"`
-  SourceURL        string `json:"sourceUrl";bson:"sourceUrl"`
-  LastUpdatedAtApify time.Time `json:"lastUpdatedAtApify";bson:"lastUpdatedAtApify"`
-  ReadMe           string `json:"readMe";bson:"readMe"`
-  RegionData       []struct {
-    Region        string `json:"region";bson:"region"`
-    ActiveCases   int    `json:"activeCases";bson:"activeCases"`
-    NewInfected   int    `json:"newInfected";bson:"newInfected"`
-    Recovered     int    `json:"recovered";bson:"recovered"`
-    NewRecovered  int    `json:"newRecovered";bson:"newRecovered"`
-    Deceased      int    `json:"deceased";bson:"deceased"`
-    NewDeceased   int    `json:"newDeceased";bson:"newDeceased"`
-    TotalInfected int    `json:"totalInfected";bson:"totalInfected"`
-  } `json:"regionData";bson:"regionData"`
-}
-type Result struct{
-  State string `json:"state"`
-  ActiveCases int32 `json:"activecases"`
-  LastUpdatedAtApify primitive.DateTime `json:"lastUpdatedAtApify"`
-  TotalCasesInIndia int32 `json:"totalcasesinindia"`
-}
-
 // structToBsonDocument - method to convert golang struct to bson document
 func structToBsonDocument(v interface{}) (doc *bson.D, err error) {
     data, err := bson.Marshal(v)
@@ -60,7 +27,7 @@ func structToBsonDocument(v interface{}) (doc *bson.D, err error) {
 }
  
 // UpdateData - handler method for updating covid data in mongodb
-func UpdateData(response Response){
+func UpdateData(response model.Response){
   // now we need to define our database and collection
   quickstartDatabase := database.MI.Client.Database("covid") // maybe we need create this database before 
  
@@ -119,7 +86,7 @@ func GetCovidCases(c echo.Context) (err error) {
   if err != nil {
     fmt.Print(err.Error())
   }
-  var responseObject Response //object of struct type Response
+  var responseObject model.Response //object of struct type Response
   json.Unmarshal(bodyBytes, &responseObject) //unmarshaling the response
   //fmt.Printf("API Response as struct %+v\n", responseObject)
   UpdateData(responseObject)
@@ -127,7 +94,7 @@ func GetCovidCases(c echo.Context) (err error) {
 }
 
 // GetCasesInState - handler method for getting covid cases in a state from database
-func GetCasesInState(state string) *Result{
+func GetCasesInState(state string) *(model.Result){
 
   quickstartDatabase := database.MI.Client.Database("covid") // maybe we need create this database before 
   // set collection
@@ -162,7 +129,7 @@ func GetCasesInState(state string) *Result{
     }
     //fmt.Println("---------")
   }
-  result := &Result{
+  result := &model.Result{
     State:state,
     ActiveCases: response["activecases"].(int32),
     LastUpdatedAtApify:response["lastupdatedatapify"].(primitive.DateTime),
