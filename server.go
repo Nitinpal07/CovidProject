@@ -9,6 +9,8 @@ import(
 	"path"
 	"myapp/controller"
 	database "myapp/database"
+	_ "myapp/docs/echosimple"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func main(){
@@ -18,7 +20,7 @@ func main(){
 	server.GET(path.Join("/"), homepage)
 	server.GET("/covidcases", controller.GetCovidCases) // UpdateCovidData endpoint
 	//updatedata()
-
+	server.GET("/swagger/*", echoSwagger.WrapHandler)
 	server.GET("/getCases",controller.GetCases) //GetCovidInCoordinates endpoint
 	godotenv.Load()
 	port := os.Getenv("PORT")
